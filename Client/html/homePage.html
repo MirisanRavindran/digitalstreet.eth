@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>NFT Floor Price Tracker</title>
+  </head>
+  <body>
+    <h1>NFT Floor Price Tracker</h1>
+    <div>
+      <label for="collection-slug-input">Collection Slug:</label>
+      <input id="collection-slug-input" type="text" placeholder="Enter collection slug...">
+      <button id="get-floor-price-button">Get Floor Price</button>
+    </div>
+    <div>
+      <p>Current ETH Price: <span id="eth-price"></span></p>
+      <p>Floor Price: <span id="floor-price"></span></p>
+    </div>
+
+    <script>
+      const getEthPrice = async () => {
+        const response = await fetch('/eth-price');
+        const ethPrice = await response.text();
+        document.getElementById('eth-price').textContent = ethPrice;
+      };
+
+      const getFloorPrice = async () => {
+        const collectionSlug = document.getElementById('collection-slug-input').value;
+        const response = await fetch(`/nft-floor-price/${collectionSlug}`);
+        const floorPrice = await response.text();
+        document.getElementById('floor-price').textContent = floorPrice;
+      };
+
+      getEthPrice();
+
+      document.getElementById('get-floor-price-button').addEventListener('click', getFloorPrice);
+    </script>
+    <script src="../../Server/utils/app.js"></script>
+  </body>
+</html>
